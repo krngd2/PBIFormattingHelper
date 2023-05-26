@@ -1,0 +1,24 @@
+{
+  "name": "pbi-formatting-helper",
+  "version": "1.0.0",
+  "description": "Help in creating formatting options easy way",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "files": ["src/*"],
+  "dependencies": {
+    "powerbi-visuals-api": "^5.4.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^5.0.4"
+  }
+}
