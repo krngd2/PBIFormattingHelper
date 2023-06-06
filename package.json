@@ -1,5 +1,5 @@
 {
-  "name": "pbi-formatting-helper",
+  "name": "pbiviz-formatting-helper",
   "version": "1.0.0",
   "description": "Help in creating formatting options easy way",
   "main": "src/index.ts",
