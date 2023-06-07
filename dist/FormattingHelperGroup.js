@@ -18,13 +18,13 @@ class FormattingHelperGroup {
         this.uid = `${objectName}Card_${this.groupName}_uid`;
         if (topLevelTogglePropertyName) {
             this.topLevelToggle = {
-                uid: `${objectName}Card_${this.groupName}_${topLevelTogglePropertyName}_uid`,
+                uid: `${objectName}Card_${this.groupName}_${String(topLevelTogglePropertyName)}_uid`,
                 suppressDisplayName: true,
                 disabled,
                 control: {
                     type: "ToggleSwitch" /* FormattingComponent.ToggleSwitch */,
                     properties: {
-                        descriptor: { objectName, propertyName: topLevelTogglePropertyName },
+                        descriptor: { objectName, propertyName: String(topLevelTogglePropertyName) },
                         value: settingsObject[topLevelTogglePropertyName],
                     },
                 },
@@ -33,12 +33,12 @@ class FormattingHelperGroup {
     }
     color(displayName, propertyName) {
         this.slices.push({
-            uid: `${this.objectName}Card_${this.groupName}Group_${propertyName}_uid`,
+            uid: `${this.objectName}Card_${this.groupName}Group_${String(propertyName)}_uid`,
             displayName,
             control: {
                 type: "ColorPicker" /* FormattingComponent.ColorPicker */,
                 properties: {
-                    descriptor: { objectName: this.objectName, propertyName },
+                    descriptor: { objectName: this.objectName, propertyName: String(propertyName) },
                     value: { value: this.settingsObject[propertyName] },
                 },
             },
@@ -47,7 +47,7 @@ class FormattingHelperGroup {
     }
     number(displayName, propertyName, minValue, maxValue) {
         this.slices.push({
-            uid: `$${this.objectName}Card_${this.groupName}Group_${propertyName}_uid`,
+            uid: `$${this.objectName}Card_${this.groupName}Group_${String(propertyName)}_uid`,
             displayName,
             control: {
                 type: "NumUpDown" /* FormattingComponent.NumUpDown */,
@@ -64,16 +64,17 @@ class FormattingHelperGroup {
                     },
                     descriptor: {
                         objectName: this.objectName,
-                        propertyName,
+                        propertyName: String(propertyName),
                     },
                     value: this.settingsObject[propertyName],
                 },
             },
         });
+        return this;
     }
     text(displayName, propertyName, placeholder) {
         this.slices.push({
-            uid: `${this.objectName}_${this.groupName}Group_${propertyName}_uid`,
+            uid: `${this.objectName}_${this.groupName}Group_${String(propertyName)}_uid`,
             displayName,
             control: {
                 type: "TextInput" /* FormattingComponent.TextInput */,
@@ -81,7 +82,7 @@ class FormattingHelperGroup {
                     placeholder,
                     descriptor: {
                         objectName: this.objectName,
-                        propertyName,
+                        propertyName: String(propertyName),
                     },
                     value: this.settingsObject[propertyName],
                 },
@@ -91,7 +92,7 @@ class FormattingHelperGroup {
     }
     dropdown(displayName, propertyName, disabled) {
         this.slices.push({
-            uid: `${this.objectName}_${this.groupName}Group_${propertyName}_uid`,
+            uid: `${this.objectName}_${this.groupName}Group_${String(propertyName)}_uid`,
             displayName,
             disabled,
             control: {
@@ -99,7 +100,7 @@ class FormattingHelperGroup {
                 properties: {
                     descriptor: {
                         objectName: this.objectName,
-                        propertyName,
+                        propertyName: String(propertyName),
                     },
                     value: this.settingsObject[propertyName],
                 },
@@ -177,7 +178,7 @@ class FormattingHelperGroup {
     }
     alignment(displayName, propertyName, mode, disabled) {
         this.slices.push({
-            uid: `${this.objectName}_${this.groupName}Group_${propertyName}_uid`,
+            uid: `${this.objectName}_${this.groupName}Group_${String(propertyName)}_uid`,
             displayName,
             disabled,
             control: {
@@ -185,7 +186,7 @@ class FormattingHelperGroup {
                 properties: {
                     descriptor: {
                         objectName: this.objectName,
-                        propertyName,
+                        propertyName: String(propertyName),
                     },
                     mode,
                     value: this.settingsObject[propertyName],
@@ -196,7 +197,7 @@ class FormattingHelperGroup {
     }
     marginPadding(displayName, params) {
         this.slices.push({
-            uid: `${this.objectName}_${this.groupName}Group_${params === null || params === void 0 ? void 0 : params.leftPropertyName}_uid`,
+            uid: `${this.objectName}_${this.groupName}Group_${String(params === null || params === void 0 ? void 0 : params.leftPropertyName)}_uid`,
             displayName,
             control: {
                 type: "MarginPadding" /* FormattingComponent.MarginPadding */,
@@ -204,28 +205,28 @@ class FormattingHelperGroup {
                     left: {
                         descriptor: {
                             objectName: this.objectName,
-                            propertyName: params.leftPropertyName,
+                            propertyName: String(params.leftPropertyName),
                         },
                         value: this.settingsObject[params.leftPropertyName],
                     },
                     right: {
                         descriptor: {
                             objectName: this.objectName,
-                            propertyName: params.rightPropertyName,
+                            propertyName: String(params.rightPropertyName),
                         },
                         value: this.settingsObject[params.rightPropertyName],
                     },
                     top: {
                         descriptor: {
                             objectName: this.objectName,
-                            propertyName: params.topPropertyName,
+                            propertyName: String(params.topPropertyName),
                         },
                         value: this.settingsObject[params.topPropertyName],
                     },
                     bottom: {
                         descriptor: {
                             objectName: this.objectName,
-                            propertyName: params.bottomPropertyName,
+                            propertyName: String(params.bottomPropertyName),
                         },
                         value: this.settingsObject[params.bottomPropertyName],
                     },

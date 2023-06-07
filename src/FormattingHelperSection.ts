@@ -8,7 +8,7 @@ import FormattingSlice = powerbi.visuals.FormattingSlice;
 import AlignmentGroupMode = powerbi.visuals.AlignmentGroupMode;
 import { FormattingHelperGroup } from './FormattingHelperGroup';
 
-export class FormattingHelperSection implements FormattingCard {
+export class FormattingHelperSection<T> implements FormattingCard {
   disabled?: boolean | undefined;
   disabledReason?: string | undefined;
   topLevelToggle?: powerbi.visuals.EnabledSlice | undefined;
@@ -22,10 +22,10 @@ export class FormattingHelperSection implements FormattingCard {
   public uid: string = '';
 
   constructor(
-    private objectName: string,
     public displayName: string,
+    private objectName: string,
     private settingsObject: any,
-    topLevelTogglePropertyName?: string,
+    topLevelTogglePropertyName?: keyof T,
   ) {
     this.uid = `${this.objectName}Section`;
     this.revertToDefaultDescriptors = Object.keys(this.settingsObject).map((propertyName) => ({
@@ -34,14 +34,14 @@ export class FormattingHelperSection implements FormattingCard {
     }));
     if (topLevelTogglePropertyName) {
       this.topLevelToggle = {
-        uid: `${this.uid}_${topLevelTogglePropertyName}`,
+        uid: `${this.uid}_${String(topLevelTogglePropertyName)}`,
         suppressDisplayName: true,
         control: {
           type: FormattingComponent.ToggleSwitch,
           properties: {
             descriptor: {
               objectName,
-              propertyName: topLevelTogglePropertyName,
+              propertyName: String(topLevelTogglePropertyName),
             },
             value: this.settingsObject[topLevelTogglePropertyName],
           },
@@ -52,10 +52,10 @@ export class FormattingHelperSection implements FormattingCard {
 
   group(
     displayName: string,
-    togglePropertyName?: string,
+    togglePropertyName?: keyof T,
     params?: Partial<FormatCardOptionalParams>,
-  ): FormattingHelperGroup {
-    return new FormattingHelperGroup(
+  ): FormattingHelperGroup<T> {
+    const group = new FormattingHelperGroup<T>(
       displayName,
       this.objectName,
       this.settingsObject,
@@ -63,6 +63,8 @@ export class FormattingHelperSection implements FormattingCard {
       params?.disabled,
       params?.collapsible,
     );
+    this.groups.push(group)
+    return group
   }
 }
 

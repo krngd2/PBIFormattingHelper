@@ -7,7 +7,7 @@ import FormattingGroup = powerbi.visuals.FormattingGroup;
 import FormattingSlice = powerbi.visuals.FormattingSlice;
 import AlignmentGroupMode = powerbi.visuals.AlignmentGroupMode;
 
-export class FormattingHelperGroup implements FormattingGroup {
+export class FormattingHelperGroup<T> implements FormattingGroup {
   disabledReason?: string | undefined;
   topLevelToggle?: powerbi.visuals.EnabledSlice | undefined;
   slices: (FormattingSlice | powerbi.visuals.FormattingSlicePlaceholder)[] = [];
@@ -25,7 +25,7 @@ export class FormattingHelperGroup implements FormattingGroup {
     public displayName: string,
     public objectName: string,
     public settingsObject: any,
-    topLevelTogglePropertyName?: string,
+    topLevelTogglePropertyName?: keyof T,
     public disabled?: boolean,
     public collapsible?: boolean,
   ) {
@@ -33,13 +33,13 @@ export class FormattingHelperGroup implements FormattingGroup {
     this.uid = `${objectName}Card_${this.groupName}_uid`;
     if (topLevelTogglePropertyName) {
       this.topLevelToggle = {
-        uid: `${objectName}Card_${this.groupName}_${topLevelTogglePropertyName}_uid`,
+        uid: `${objectName}Card_${this.groupName}_${String(topLevelTogglePropertyName)}_uid`,
         suppressDisplayName: true,
         disabled,
         control: {
           type: FormattingComponent.ToggleSwitch,
           properties: {
-            descriptor: { objectName, propertyName: topLevelTogglePropertyName },
+            descriptor: { objectName, propertyName: String(topLevelTogglePropertyName) },
             value: settingsObject[topLevelTogglePropertyName],
           },
         },
@@ -47,14 +47,14 @@ export class FormattingHelperGroup implements FormattingGroup {
     }
   }
 
-  color(displayName: string, propertyName: string) {
+  color(displayName: string, propertyName: keyof T) {
     this.slices.push({
-      uid: `${this.objectName}Card_${this.groupName}Group_${propertyName}_uid`,
+      uid: `${this.objectName}Card_${this.groupName}Group_${String(propertyName)}_uid`,
       displayName,
       control: {
         type: FormattingComponent.ColorPicker,
         properties: {
-          descriptor: { objectName: this.objectName, propertyName },
+          descriptor: { objectName: this.objectName, propertyName: String(propertyName) },
           value: { value: this.settingsObject[propertyName] },
         },
       },
@@ -62,9 +62,9 @@ export class FormattingHelperGroup implements FormattingGroup {
     return this;
   }
 
-  number(displayName: string, propertyName: string, minValue: number, maxValue: number) {
+  number(displayName: string, propertyName: keyof T, minValue: number, maxValue: number) {
     this.slices.push({
-      uid: `$${this.objectName}Card_${this.groupName}Group_${propertyName}_uid`,
+      uid: `$${this.objectName}Card_${this.groupName}Group_${String(propertyName)}_uid`,
       displayName,
       control: {
         type: FormattingComponent.NumUpDown,
@@ -81,17 +81,18 @@ export class FormattingHelperGroup implements FormattingGroup {
           },
           descriptor: {
             objectName: this.objectName,
-            propertyName,
+            propertyName: String(propertyName),
           },
           value: this.settingsObject[propertyName],
         },
       },
     });
+    return this
   }
 
-  text(displayName: string, propertyName: string, placeholder: string) {
+  text(displayName: string, propertyName: keyof T, placeholder: string) {
     this.slices.push({
-      uid: `${this.objectName}_${this.groupName}Group_${propertyName}_uid`,
+      uid: `${this.objectName}_${this.groupName}Group_${String(propertyName)}_uid`,
       displayName,
       control: {
         type: FormattingComponent.TextInput,
@@ -99,7 +100,7 @@ export class FormattingHelperGroup implements FormattingGroup {
           placeholder,
           descriptor: {
             objectName: this.objectName,
-            propertyName,
+            propertyName: String(propertyName),
           },
           value: this.settingsObject[propertyName],
         },
@@ -108,9 +109,9 @@ export class FormattingHelperGroup implements FormattingGroup {
     return this;
   }
 
-  dropdown(displayName: string, propertyName: string, disabled?: boolean) {
+  dropdown(displayName: string, propertyName: keyof T, disabled?: boolean) {
     this.slices.push({
-      uid: `${this.objectName}_${this.groupName}Group_${propertyName}_uid`,
+      uid: `${this.objectName}_${this.groupName}Group_${String(propertyName)}_uid`,
       displayName,
       disabled,
       control: {
@@ -118,7 +119,7 @@ export class FormattingHelperGroup implements FormattingGroup {
         properties: {
           descriptor: {
             objectName: this.objectName,
-            propertyName,
+            propertyName: String(propertyName),
           },
           value: this.settingsObject[propertyName],
         },
@@ -216,9 +217,9 @@ export class FormattingHelperGroup implements FormattingGroup {
     return this;
   }
 
-  alignment(displayName: string, propertyName: string, mode: AlignmentGroupMode, disabled?: boolean) {
+  alignment(displayName: string, propertyName: keyof T, mode: AlignmentGroupMode, disabled?: boolean) {
     this.slices.push({
-      uid: `${this.objectName}_${this.groupName}Group_${propertyName}_uid`,
+      uid: `${this.objectName}_${this.groupName}Group_${String(propertyName)}_uid`,
       displayName,
       disabled,
       control: {
@@ -226,7 +227,7 @@ export class FormattingHelperGroup implements FormattingGroup {
         properties: {
           descriptor: {
             objectName: this.objectName,
-            propertyName,
+            propertyName: String(propertyName),
           },
           mode,
           value: this.settingsObject[propertyName],
@@ -236,9 +237,9 @@ export class FormattingHelperGroup implements FormattingGroup {
     return this;
   }
 
-  marginPadding(displayName: string, params: FormatSliceMarginPaddingParams) {
+  marginPadding(displayName: string, params: FormatSliceMarginPaddingParams<T>) {
     this.slices.push({
-      uid: `${this.objectName}_${this.groupName}Group_${params?.leftPropertyName}_uid`,
+      uid: `${this.objectName}_${this.groupName}Group_${String(params?.leftPropertyName)}_uid`,
       displayName,
       control: {
         type: FormattingComponent.MarginPadding,
@@ -246,28 +247,28 @@ export class FormattingHelperGroup implements FormattingGroup {
           left: {
             descriptor: {
               objectName: this.objectName,
-              propertyName: params.leftPropertyName,
+              propertyName: String(params.leftPropertyName),
             },
             value: this.settingsObject[params.leftPropertyName],
           },
           right: {
             descriptor: {
               objectName: this.objectName,
-              propertyName: params.rightPropertyName,
+              propertyName: String(params.rightPropertyName),
             },
             value: this.settingsObject[params.rightPropertyName],
           },
           top: {
             descriptor: {
               objectName: this.objectName,
-              propertyName: params.topPropertyName,
+              propertyName: String(params.topPropertyName),
             },
             value: this.settingsObject[params.topPropertyName],
           },
           bottom: {
             descriptor: {
               objectName: this.objectName,
-              propertyName: params.bottomPropertyName,
+              propertyName: String(params.bottomPropertyName),
             },
             value: this.settingsObject[params.bottomPropertyName],
           },
@@ -303,9 +304,9 @@ interface FormatSliceFontParams {
   italicPropertyName?: string;
   underlinePropertyName?: string;
 }
-interface FormatSliceMarginPaddingParams {
-  leftPropertyName: string;
-  rightPropertyName: string;
-  topPropertyName: string;
-  bottomPropertyName: string;
+interface FormatSliceMarginPaddingParams<T> {
+  leftPropertyName: keyof T;
+  rightPropertyName: keyof T;
+  topPropertyName: keyof T;
+  bottomPropertyName: keyof T;
 }

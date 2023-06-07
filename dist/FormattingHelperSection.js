@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FormattingHelperSection = void 0;
 const FormattingHelperGroup_1 = require("./FormattingHelperGroup");
 class FormattingHelperSection {
-    constructor(objectName, displayName, settingsObject, topLevelTogglePropertyName) {
-        this.objectName = objectName;
+    constructor(displayName, objectName, settingsObject, topLevelTogglePropertyName) {
         this.displayName = displayName;
+        this.objectName = objectName;
         this.settingsObject = settingsObject;
         this.groups = [];
         this.uid = '';
@@ -16,14 +16,14 @@ class FormattingHelperSection {
         }));
         if (topLevelTogglePropertyName) {
             this.topLevelToggle = {
-                uid: `${this.uid}_${topLevelTogglePropertyName}`,
+                uid: `${this.uid}_${String(topLevelTogglePropertyName)}`,
                 suppressDisplayName: true,
                 control: {
                     type: "ToggleSwitch" /* FormattingComponent.ToggleSwitch */,
                     properties: {
                         descriptor: {
                             objectName,
-                            propertyName: topLevelTogglePropertyName,
+                            propertyName: String(topLevelTogglePropertyName),
                         },
                         value: this.settingsObject[topLevelTogglePropertyName],
                     },
@@ -32,7 +32,9 @@ class FormattingHelperSection {
         }
     }
     group(displayName, togglePropertyName, params) {
-        return new FormattingHelperGroup_1.FormattingHelperGroup(displayName, this.objectName, this.settingsObject, togglePropertyName, params === null || params === void 0 ? void 0 : params.disabled, params === null || params === void 0 ? void 0 : params.collapsible);
+        const group = new FormattingHelperGroup_1.FormattingHelperGroup(displayName, this.objectName, this.settingsObject, togglePropertyName, params === null || params === void 0 ? void 0 : params.disabled, params === null || params === void 0 ? void 0 : params.collapsible);
+        this.groups.push(group);
+        return group;
     }
 }
 exports.FormattingHelperSection = FormattingHelperSection;

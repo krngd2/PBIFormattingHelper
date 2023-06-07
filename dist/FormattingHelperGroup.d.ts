@@ -2,7 +2,7 @@ import powerbi from 'powerbi-visuals-api';
 import FormattingGroup = powerbi.visuals.FormattingGroup;
 import FormattingSlice = powerbi.visuals.FormattingSlice;
 import AlignmentGroupMode = powerbi.visuals.AlignmentGroupMode;
-export declare class FormattingHelperGroup implements FormattingGroup {
+export declare class FormattingHelperGroup<T> implements FormattingGroup {
     displayName: string;
     objectName: string;
     settingsObject: any;
@@ -21,14 +21,14 @@ export declare class FormattingHelperGroup implements FormattingGroup {
     suppressDisplayName?: boolean | undefined;
     uid: string;
     groupName: string;
-    constructor(displayName: string, objectName: string, settingsObject: any, topLevelTogglePropertyName?: string, disabled?: boolean | undefined, collapsible?: boolean | undefined);
-    color(displayName: string, propertyName: string): this;
-    number(displayName: string, propertyName: string, minValue: number, maxValue: number): void;
-    text(displayName: string, propertyName: string, placeholder: string): this;
-    dropdown(displayName: string, propertyName: string, disabled?: boolean): this;
+    constructor(displayName: string, objectName: string, settingsObject: any, topLevelTogglePropertyName?: keyof T, disabled?: boolean | undefined, collapsible?: boolean | undefined);
+    color(displayName: string, propertyName: keyof T): this;
+    number(displayName: string, propertyName: keyof T, minValue: number, maxValue: number): this;
+    text(displayName: string, propertyName: keyof T, placeholder: string): this;
+    dropdown(displayName: string, propertyName: keyof T, disabled?: boolean): this;
     fontControl(displayName: string, fontProps: FormatSliceFontParams): this;
-    alignment(displayName: string, propertyName: string, mode: AlignmentGroupMode, disabled?: boolean): this;
-    marginPadding(displayName: string, params: FormatSliceMarginPaddingParams): this;
+    alignment(displayName: string, propertyName: keyof T, mode: AlignmentGroupMode, disabled?: boolean): this;
+    marginPadding(displayName: string, params: FormatSliceMarginPaddingParams<T>): this;
     toggle(displayName: string, propertyName: string): this;
 }
 interface FormatSliceFontParams {
@@ -38,10 +38,10 @@ interface FormatSliceFontParams {
     italicPropertyName?: string;
     underlinePropertyName?: string;
 }
-interface FormatSliceMarginPaddingParams {
-    leftPropertyName: string;
-    rightPropertyName: string;
-    topPropertyName: string;
-    bottomPropertyName: string;
+interface FormatSliceMarginPaddingParams<T> {
+    leftPropertyName: keyof T;
+    rightPropertyName: keyof T;
+    topPropertyName: keyof T;
+    bottomPropertyName: keyof T;
 }
 export {};

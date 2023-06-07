@@ -2,9 +2,9 @@ import powerbi from 'powerbi-visuals-api';
 import FormattingCard = powerbi.visuals.FormattingCard;
 import FormattingGroup = powerbi.visuals.FormattingGroup;
 import { FormattingHelperGroup } from './FormattingHelperGroup';
-export declare class FormattingHelperSection implements FormattingCard {
-    private objectName;
+export declare class FormattingHelperSection<T> implements FormattingCard {
     displayName: string;
+    private objectName;
     private settingsObject;
     disabled?: boolean | undefined;
     disabledReason?: string | undefined;
@@ -17,8 +17,8 @@ export declare class FormattingHelperSection implements FormattingCard {
     suppressDisplayName?: boolean | undefined;
     warningMessage?: powerbi.IVisualErrorMessage | undefined;
     uid: string;
-    constructor(objectName: string, displayName: string, settingsObject: any, topLevelTogglePropertyName?: string);
-    group(displayName: string, togglePropertyName?: string, params?: Partial<FormatCardOptionalParams>): FormattingHelperGroup;
+    constructor(displayName: string, objectName: string, settingsObject: any, topLevelTogglePropertyName?: keyof T);
+    group(displayName: string, togglePropertyName?: keyof T, params?: Partial<FormatCardOptionalParams>): FormattingHelperGroup<T>;
 }
 interface FormatCardOptionalParams {
     collapsible: boolean;

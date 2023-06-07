@@ -1,13 +1,14 @@
 {
   "name": "pbiviz-formatting-helper",
-  "version": "1.0.0",
+  "version": "2.1.2",
   "description": "Help in creating formatting options easy way",
-  "main": "src/index.ts",
+  "main": "dist",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "tslint -p tsconfig.json"
+    "lint": "tslint -p tsconfig.json",
+    "publish": "tsc && npm publish"
   },
   "author": "",
   "license": "ISC",
