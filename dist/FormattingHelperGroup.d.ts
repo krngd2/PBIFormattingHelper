@@ -31,17 +31,16 @@ export declare class FormattingHelperGroup<T> implements FormattingGroup {
     marginPadding(displayName: string, params: FormatSliceMarginPaddingParams<T>): this;
     toggle(displayName: string, propertyName: string): this;
 }
-interface FormatSliceFontParams {
+export interface FormatSliceFontParams {
     stylePropertyName?: string;
     sizePropertyName?: string;
     boldPropertyName?: string;
     italicPropertyName?: string;
     underlinePropertyName?: string;
 }
-interface FormatSliceMarginPaddingParams<T> {
+export interface FormatSliceMarginPaddingParams<T> {
     leftPropertyName: keyof T;
     rightPropertyName: keyof T;
     topPropertyName: keyof T;
     bottomPropertyName: keyof T;
 }
-export {};

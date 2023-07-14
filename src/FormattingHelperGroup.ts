@@ -297,14 +297,14 @@ export class FormattingHelperGroup<T> implements FormattingGroup {
   }
 }
 
-interface FormatSliceFontParams {
+export interface FormatSliceFontParams {
   stylePropertyName?: string;
   sizePropertyName?: string;
   boldPropertyName?: string;
   italicPropertyName?: string;
   underlinePropertyName?: string;
 }
-interface FormatSliceMarginPaddingParams<T> {
+export interface FormatSliceMarginPaddingParams<T> {
   leftPropertyName: keyof T;
   rightPropertyName: keyof T;
   topPropertyName: keyof T;

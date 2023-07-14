@@ -1,7 +1,7 @@
 {
   "name": "pbiviz-formatting-helper",
-  "version": "2.1.3",
-  "description": "Help in creating formatting options easy way",
+  "version": "2.2.0",
+  "description": "Helps in creating formatting options easy way",
   "main": "dist",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -22,7 +22,7 @@
   ],
   "author": "",
   "license": "ISC",
-  "files": ["src/*"],
+  "files": ["dist/*", "index.d.ts"],
   "dependencies": {
     "powerbi-visuals-api": "^5.4.0"
   },
